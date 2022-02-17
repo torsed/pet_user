@@ -9,17 +9,6 @@
 			"name": "create user",
 			"event": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"pm.environment.set(\"user_id\", _.random(1, 1000));\r",
-							"pm.environment.set(\"user_name\", _.random(1, 1000));\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
 					"listen": "test",
 					"script": {
 						"exec": [
@@ -29,7 +18,20 @@
 							"var jsonData = pm.response.json();\r",
 							"pm.test(\"Response ID the same as in environment\", function () {\r",
 							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"message\"));\r",
-							"});"
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"user_id\", _.random(1, 1000));\r",
+							"pm.environment.set(\"user_name\", _.random(1, 1000));\r",
+							"var username = pm.variables.replaceIn(\"{{$randomUserName}}\"); \r",
+							"pm.environment.set(\"user_name\",username);"
 						],
 						"type": "text/javascript"
 					}
@@ -58,13 +60,6 @@
 					"path": [
 						"v2",
 						"user"
-					],
-					"query": [
-						{
-							"key": "",
-							"value": null,
-							"disabled": true
-						}
 					]
 				}
 			},
@@ -79,6 +74,16 @@
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var username = pm.variables.replaceIn(\"{{$randomUserName}}\"); \r",
+							"pm.test(\"Response user_name the same as in environment\"), function() {\r",
+							"    pm.expect(username).to.eql(pm.environment.get(\"user_name\"));\r",
+							" };\r",
+							"\r",
+							" var jsonData = pm.response.json();\r",
+							"pm.test(\"Response user_id the same as in environment\", function () {\r",
+							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"user_id\"));\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -138,7 +143,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"id\": {{user_id}},\r\n  \"username\": {{user_name}},\r\n  \"firstName\": \"Duda\",\r\n  \"lastName\": \"Buba\",\r\n  \"email\": \"aaa@aaa.com\",\r\n  \"password\": \"123\",\r\n  \"phone\": \"32153\",\r\n  \"userStatus\": 0\r\n}",
+					"raw": "{\r\n  \"id\": {{user_id}},\r\n  \"username\": \"{{user_name}}\",\r\n  \"firstName\": \"Duda\",\r\n  \"lastName\": \"Buba\",\r\n  \"email\": \"aaa@aaa.com\",\r\n  \"password\": \"123\",\r\n  \"phone\": \"32153\",\r\n  \"userStatus\": 0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -171,7 +176,11 @@
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
-							"});"
+							"});\r",
+							"var username = pm.variables.replaceIn(\"{{$randomUserName}}\"); \r",
+							"pm.test(\"Response user_name the same as in environment\"), function() {\r",
+							"    pm.expect(username).to.eql(pm.environment.get(\"user_name\"));\r",
+							" };"
 						],
 						"type": "text/javascript"
 					}
@@ -254,6 +263,11 @@
 						"exec": [
 							"pm.test(\"Status code is 404\", function () {\r",
 							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"User not found\", function () {\r",
+							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"message\"));\r",
 							"});"
 						],
 						"type": "text/javascript"
