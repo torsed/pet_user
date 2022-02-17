@@ -15,11 +15,16 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
+							"\r",
 							"var jsonData = pm.response.json();\r",
-							"pm.test(\"Response ID the same as in environment\", function () {\r",
+							"pm.test(\"Response user_id the same as in message\", function () {\r",
 							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"message\"));\r",
 							"});\r",
-							""
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Response ID the same as in user_id\", function () {\r",
+							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"{{user_id}}\"));\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -29,7 +34,6 @@
 					"script": {
 						"exec": [
 							"pm.environment.set(\"user_id\", _.random(1, 1000));\r",
-							"pm.environment.set(\"user_name\", _.random(1, 1000));\r",
 							"var username = pm.variables.replaceIn(\"{{$randomUserName}}\"); \r",
 							"pm.environment.set(\"user_name\",username);"
 						],
@@ -84,7 +88,7 @@
 							" var jsonData = pm.response.json();\r",
 							"pm.test(\"Response user_id the same as in environment\", function () {\r",
 							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"user_id\"));\r",
-							"});"
+							"}); "
 						],
 						"type": "text/javascript"
 					}
@@ -132,6 +136,10 @@
 							"var jsonData = pm.response.json();\r",
 							"pm.test(\"Response ID the same as in environment\", function () {\r",
 							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"message\"));\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Response ID the same as in user_id\", function () {\r",
+							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"{{user_id}}\"));\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -225,10 +233,7 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							"var jsonData = pm.response.json();\r",
-							"pm.test(\"Response ID the same as in environment\", function () {\r",
-							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"message\"));\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -267,7 +272,7 @@
 							"\r",
 							"var jsonData = pm.response.json();\r",
 							"pm.test(\"User not found\", function () {\r",
-							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"message\"));\r",
+							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"{{user_id}}\"));\r",
 							"});"
 						],
 						"type": "text/javascript"
