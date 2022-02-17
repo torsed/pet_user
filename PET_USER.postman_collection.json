@@ -22,9 +22,14 @@
 							"});\r",
 							"\r",
 							"var jsonData = pm.response.json();\r",
-							"pm.test(\"Response ID the same as in user_id\", function () {\r",
+							"pm.test(\"Response user ID the same as in environment\", function () {\r",
 							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"{{user_id}}\"));\r",
-							"});"
+							"});\r",
+							"\r",
+							"var username = pm.variables.replaceIn(\"{{$randomUserName}}\"); \r",
+							"pm.test(\"Response user_name the same as in environment\"), function() {\r",
+							"    pm.expect(username).to.eql(pm.environment.get(\"user_name\"));\r",
+							" };"
 						],
 						"type": "text/javascript"
 					}
@@ -34,6 +39,8 @@
 					"script": {
 						"exec": [
 							"pm.environment.set(\"user_id\", _.random(1, 1000));\r",
+							"\r",
+							"\r",
 							"var username = pm.variables.replaceIn(\"{{$randomUserName}}\"); \r",
 							"pm.environment.set(\"user_name\",username);"
 						],
@@ -185,6 +192,7 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
+							"\r",
 							"var username = pm.variables.replaceIn(\"{{$randomUserName}}\"); \r",
 							"pm.test(\"Response user_name the same as in environment\"), function() {\r",
 							"    pm.expect(username).to.eql(pm.environment.get(\"user_name\"));\r",
