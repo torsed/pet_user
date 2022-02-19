@@ -42,7 +42,10 @@
 							"\r",
 							"\r",
 							"var username = pm.variables.replaceIn(\"{{$randomUserName}}\"); \r",
-							"pm.environment.set(\"user_name\",username);"
+							"pm.environment.set(\"user_name\",username);\r",
+							"\r",
+							"var password = pm.variables.replaceIn(\"{{$randomPassword}}\"); \r",
+							"pm.environment.set(\"password\",password);"
 						],
 						"type": "text/javascript"
 					}
@@ -53,7 +56,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"id\": {{user_id}},\r\n  \"username\": \"{{user_name}}\",\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"password\": \"{{$randomPassword}}\",\r\n  \"phone\": \"{{$randomPhoneNumber}}\",\r\n  \"userStatus\": 0\r\n}",
+					"raw": "{\r\n    \"id\": {{user_id}},\r\n    \"username\": \"{{user_name}}\",\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"phone\": \"{{$randomPhoneNumber}}\",\r\n    \"userStatus\": 0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -158,7 +161,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"id\": {{user_id}},\r\n  \"username\": \"{{user_name}}\",\r\n  \"firstName\": \"Duda\",\r\n  \"lastName\": \"Buba\",\r\n  \"email\": \"aaa@aaa.com\",\r\n  \"password\": \"123\",\r\n  \"phone\": \"32153\",\r\n  \"userStatus\": 0\r\n}",
+					"raw": "{\r\n    \"id\": {{user_id}},\r\n    \"username\": \"{{user_name}}\",\r\n    \"firstName\": \"Duda\",\r\n    \"lastName\": \"Buba\",\r\n    \"email\": \"aaa@aaa.com\",\r\n    \"password\": \"{{password}}\",\r\n    \"phone\": \"32153\",\r\n    \"userStatus\": 0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -217,6 +220,86 @@
 						"v2",
 						"user",
 						"{{user_name}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login_user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://petstore.swagger.io/v2/user/login?username={{username}}&password={{password}}",
+					"protocol": "https",
+					"host": [
+						"petstore",
+						"swagger",
+						"io"
+					],
+					"path": [
+						"v2",
+						"user",
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "{{username}}"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout_user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://petstore.swagger.io/v2/user/logout",
+					"protocol": "https",
+					"host": [
+						"petstore",
+						"swagger",
+						"io"
+					],
+					"path": [
+						"v2",
+						"user",
+						"logout"
 					]
 				}
 			},
